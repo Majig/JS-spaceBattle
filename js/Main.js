@@ -18,16 +18,15 @@
         drawEverything();
       }, 1000/framesPerSecond);
     
-    p1.init(playerPic, "Blue"); //// removed the word "car" 2x
+    p1.init(playerPic);
     initInput();  
   }
 
   function moveEverything() {
-    p1.move(); //// removed the word "car"
+    p1.move();
   }
   
   function drawEverything() {
-    drawTracks();
-    
-    p1.draw(); //// removed the word "car"
+    colorRect(0, 0, canvas.width, canvas.height, "black");  
+    p1.draw();
   }
