@@ -83,7 +83,9 @@ function shipClass() {
   }
 
   this.fireCannon = function () {
-    this.myShot.shootFrom(this);
+    if (this.myShot.isShotReadyToFire()) {
+      this.myShot.shootFrom(this);
+    }    
   }
 
   this.draw = function () {

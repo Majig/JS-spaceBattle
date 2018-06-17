@@ -19,7 +19,7 @@ function initInput() {
 }
 
 function keyPressed(e) {
-  if (e.keyCode == playerShip.controlKey_Fire && playerShip.myShot.shotLife == 0) {
+  if (e.keyCode == playerShip.controlKey_Fire) {
     playerShip.fireCannon();
   }
   setKeyHoldState(e.keyCode, playerShip, true);

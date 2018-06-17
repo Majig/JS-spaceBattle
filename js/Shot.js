@@ -18,6 +18,9 @@ function shotClass() {
       this.shotLife--;
     }
 
+    this.x += this.xv;
+    this.y += this.yv;
+
     this.handleScreenWrap();
   }
 
@@ -35,12 +38,16 @@ function shotClass() {
     }
   }
 
+  this.isShotReadyToFire = function () {
+    return (this.shotLife <= 0);
+  }
+
   this.shootFrom = function (firingShip) {
     this.x = firingShip.x;
     this.y = firingShip.y;
 
-    this.xv = 0.0;
-    this.yv = 0.0;
+    this.xv = Math.cos(firingShip.ang) * SHOT_SPEED + firingShip.driftX;
+    this.yv = Math.sin(firingShip.ang) * SHOT_SPEED + firingShip.driftY;
 
     this.shotLife = SHOT_LIFE;
   }
