@@ -1,4 +1,4 @@
-var playerPic = document.createElement("img");
+var shipPic = document.createElement("img");
 
 var picsToLoad = 0;
 
@@ -21,5 +21,5 @@ function loadImageForTrackCode(trackCode, fileName) {
 }
 
 function loadImages() {
-  beginLoadingImage(playerPic, "player1.png");
+  beginLoadingImage(shipPic, "player1.png");
 }
