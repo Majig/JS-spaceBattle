@@ -3,12 +3,13 @@ const ROUNDSPEED_DECAY_MULT = 0.99;
 const THRUST_POWER = 0.15;
 const TURN_RATE = 0.03;
 
+shipClass.prototype = new movingWrapPositionClass();
 function shipClass() {
   // variables to keep track of position
+  this.xv = 0;
+  this.yv = 0;
   this.x = 75;
   this.y = 75;
-  this.driftX = 0;
-  this.driftY = 0;
   this.ang = -0.5 * Math.PI;
 
   // variable for working with shots
@@ -35,15 +36,15 @@ function shipClass() {
     this.reset();
   }
 
+  this.superclassReset = this.reset;
   this.reset = function () {
     this.ang = -0.5 * Math.PI;
 
-    this.x = canvas.width / 2;
-    this.y = canvas.height / 2;
-
+    this.superclassReset();
     this.myShot.reset();
   }
 
+  this.superclassMove = this.move;
   this.move = function () {
     if(this.keyHeld_Left) {
       this.ang -= TURN_RATE*Math.PI;
@@ -54,38 +55,35 @@ function shipClass() {
     }
     
     if(this.keyHeld_Up) {
-      this.driftX += Math.cos(this.ang) * THRUST_POWER;
-      this.driftY += Math.sin(this.ang) * THRUST_POWER;
+      this.xv += Math.cos(this.ang) * THRUST_POWER;
+      this.yv += Math.sin(this.ang) * THRUST_POWER;
     }
     
-    this.x += this.driftX;
-    this.y += this.driftY;
+    this.superclassMove();
 
-    this.handleScreenWrap();
-    this.driftX *= ROUNDSPEED_DECAY_MULT;
-    this.driftY *= ROUNDSPEED_DECAY_MULT;
+    this.xv *= ROUNDSPEED_DECAY_MULT;
+    this.yv *= ROUNDSPEED_DECAY_MULT;
 
     this.myShot.move();
-  }
-
-  this.handleScreenWrap = function () {
-    if (this.x < 0) {
-      this.x += canvas.width;
-    } else if (this.x > canvas.width) {
-      this.x -= canvas.width;
-    }
-
-    if (this.y < 0) {
-      this.y += canvas.height;
-    } else if (this.y > canvas.height) {
-      this.y -= canvas.height;
-    }
   }
 
   this.fireCannon = function () {
     if (this.myShot.isShotReadyToFire()) {
       this.myShot.shootFrom(this);
     }    
+  }
+
+  this.checkMyShipAndShotCollisionAgainst = function (thisEnemy) {
+    if (thisEnemy.isOverlappingPoint(this.x, this.y)) {
+      this.reset();
+      document.getElementById("debugText").innerHTML = "Player crashed!";
+    }
+
+    if (this.myShot.hitTest(thisEnemy)) {
+      thisEnemy.reset();
+      this.myShot.reset();
+      document.getElementById("debugText").innerHTML = "Enemy blasted!";
+    }
   }
 
   this.draw = function () {

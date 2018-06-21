@@ -1,4 +1,5 @@
-var shipPic = document.createElement("img");
+var playerPic = document.createElement("img");
+var UFOPic = document.createElement("img");
 
 var picsToLoad = 0;
 
@@ -15,11 +16,7 @@ function beginLoadingImage(imgVar, fileName) {
   imgVar.src = "images/" + fileName;
 }
 
-function loadImageForTrackCode(trackCode, fileName) {
-  trackPics[trackCode] = document.createElement("img");
-  beginLoadingImage(trackPics[trackCode], fileName);
-}
-
 function loadImages() {
-  beginLoadingImage(shipPic, "player1.png");
+  beginLoadingImage(playerPic, "player1.png");
+  beginLoadingImage(UFOPic, "ufo.png");
 }
